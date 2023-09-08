@@ -63,15 +63,15 @@
         });
 
         function insertionSort(array) {
-        for (let i = 1; i < array.length; i++) {
-            let currentElement = array[i];
-            let j = i - 1;
-            while (j >= 0 && currentElement < array[j]) {
-            array[j + 1] = array[j];
-            j--;
+            for (let i = 1; i < array.length; i++) {
+                let currentElement = array[i];
+                let j = i - 1;
+                while (j >= 0 && currentElement < array[j]) {
+                    array[j + 1] = array[j];
+                    j--;
+                }
+                array[j + 1] = currentElement;
             }
-            array[j + 1] = currentElement;
-        }
         }
 
         //Selection Sort
@@ -82,18 +82,18 @@
         });
 
         function selectionSort(array) {
-        const n = array.length;
-        for (let i = 0; i < n - 1; i++) {
-            let minIndex = i;
-            for (let j = i + 1; j < n; j++) {
-            if (array[j] < array[minIndex]) {
-                minIndex = j;
+            const n = array.length;
+            for (let i = 0; i < n - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < n; j++) {
+                    if (array[j] < array[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                if (minIndex !== i) {
+                    [array[i], array[minIndex]] = [array[minIndex], array[i]];
+                }
             }
-            }
-            if (minIndex !== i) {
-            [array[i], array[minIndex]] = [array[minIndex], array[i]];
-            }
-        }
         }
 
         //Bubble Sort
@@ -104,17 +104,17 @@
         });
 
         function bubbleSort(array) {
-        const n = array.length;
-        let swapped;
-        do {
-            swapped = false;
-            for (let i = 0; i < n - 1; i++) {
-            if (array[i] > array[i + 1]) {
-                [array[i], array[i + 1]] = [array[i + 1], array[i]];
-                swapped = true;
-            }
-            }
-        } while (swapped);
+            const n = array.length;
+            let swapped;
+            do {
+                swapped = false;
+                for (let i = 0; i < n - 1; i++) {
+                    if (array[i] > array[i + 1]) {
+                        [array[i], array[i + 1]] = [array[i + 1], array[i]];
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
         }
 
         //Quick Sort
@@ -125,20 +125,20 @@
         });
 
         function quickSort(array) {
-        if (array.length <= 1) {
-            return array;
-        }
-        const pivot = array[array.length - 1];
-        const left = [];
-        const right = [];
-        for (let i = 0; i < array.length - 1; i++) {
-            if (array[i] < pivot) {
-            left.push(array[i]);
-            } else {
-            right.push(array[i]);
+            if (array.length <= 1) {
+                return array;
             }
-        }
-        return [...quickSort(left), pivot, ...quickSort(right)];
+            const pivot = array[array.length - 1];
+            const left = [];
+            const right = [];
+            for (let i = 0; i < array.length - 1; i++) {
+                if (array[i] < pivot) {
+                    left.push(array[i]);
+                } else {
+                    right.push(array[i]);
+                }
+            }
+            return [...quickSort(left), pivot, ...quickSort(right)];
         }
 
         //Merge Sort
@@ -149,29 +149,29 @@
         });
 
         function mergeSort(array) {
-        if (array.length <= 1) {
-            return array;
-        }
-        const middle = Math.floor(array.length / 2);
-        const left = array.slice(0, middle);
-        const right = array.slice(middle);
-        return merge(mergeSort(left), mergeSort(right));
+            if (array.length <= 1) {
+                return array;
+            }
+            const middle = Math.floor(array.length / 2);
+            const left = array.slice(0, middle);
+            const right = array.slice(middle);
+            return merge(mergeSort(left), mergeSort(right));
         }
 
         function merge(left, right) {
-        let result = [];
-        let leftIndex = 0;
-        let rightIndex = 0;
-        while (leftIndex < left.length && rightIndex < right.length) {
-            if (left[leftIndex] < right[rightIndex]) {
-            result.push(left[leftIndex]);
-            leftIndex++;
-            } else {
-            result.push(right[rightIndex]);
-            rightIndex++;
+            let result = [];
+            let leftIndex = 0;
+            let rightIndex = 0;
+            while (leftIndex < left.length && rightIndex < right.length) {
+                if (left[leftIndex] < right[rightIndex]) {
+                    result.push(left[leftIndex]);
+                    leftIndex++;
+                } else {
+                    result.push(right[rightIndex]);
+                    rightIndex++;
+                }
             }
-        }
-        return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
+            return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
         }
 
         //Shell Sort
@@ -182,20 +182,20 @@
         });
 
         function shellSort(array) {
-        const n = array.length;
-        let gap = Math.floor(n / 2);
-        while (gap > 0) {
-            for (let i = gap; i < n; i++) {
-            let temp = array[i];
-            let j = i;
-            while (j >= gap && array[j - gap] > temp) {
-                array[j] = array[j - gap];
-                j -= gap;
+            const n = array.length;
+            let gap = Math.floor(n / 2);
+            while (gap > 0) {
+                for (let i = gap; i < n; i++) {
+                    let temp = array[i];
+                    let j = i;
+                    while (j >= gap && array[j - gap] > temp) {
+                        array[j] = array[j - gap];
+                        j -= gap;
+                    }
+                    array[j] = temp;
+                }
+                gap = Math.floor(gap / 2);
             }
-            array[j] = temp;
-            }
-            gap = Math.floor(gap / 2);
-        }
         }
 
         //Change Size
@@ -206,30 +206,30 @@
         });
 
         function shrinkBars(yValues) {
-        for (let i = 0; i < yValues.length; i++) {
-            yValues[i] /= 2; 
-        }
+            for (let i = 0; i < yValues.length; i++) {
+                yValues[i] /= 2; 
+            }
         }
 
         //Update Chart
 
         function updateChart() {
-        const chart = document.getElementById('barChart').getContext('2d');
-        chart.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
+            const chart = document.getElementById('barChart').getContext('2d');
+            chart.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
 
-        new Chart("barChart", {
-        type: "bar",
-        data: {
-            labels: yValues,
-            datasets: [{
-            backgroundColor: "lightblue",
-            data: yValues
-            }]
-        },
-        options: {
-            legend: {display: false},
-        }
-        });
+            new Chart("barChart", {
+            type: "bar",
+            data: {
+                labels: yValues,
+                datasets: [{
+                    backgroundColor: "lightblue",
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: {display: false},
+            }
+            });
         }
     </script>
 </body>
