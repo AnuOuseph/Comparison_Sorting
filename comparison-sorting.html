@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comparison Sorting Algorithms</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h3>Comparison Sorting Algorithms</h3>
+    </div>
+    <div>
+        <button style="cursor:pointer" id="random">Randomize Array</button>
+        <button style="cursor:pointer" id="insertion">Insertion Sort</button>
+        <button style="cursor:pointer" id="selection">Selection Sort</button>
+        <button style="cursor:pointer" id="bubble">Bubble Sort</button>
+        <button style="cursor:pointer" id="quick">Quick Sort</button>
+        <button style="cursor:pointer" id="merge">Merge Sort</button>
+        <button style="cursor:pointer" id="shell">Shell Sort</button>
+        <button style="cursor:pointer" id="size">Change Size</button>
+    </div>
+    <canvas id="barChart" style="width:100%;max-width:1100px;margin-top: 30px;"></canvas>
+    
+    <script>
+        var yValues = [90, 6, 58, 58, 82,33,16,34,41,80,10,24,74,67,27,54,49,19,1,25,98,89,26,24,3,29,78,49,99,64,82,74,8,13,73,13,10,13,85,91,45,56,75,50,5,77,15,33,12,36];
+
+        new Chart("barChart", {
+        type: "bar",
+        data: {
+            labels: yValues,
+            datasets: [{
+            backgroundColor: "lightblue",
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+        }
+        });
+
+        //Randomize Array
+
+        document.getElementById('random').addEventListener('click', function() {
+            shuffle(yValues); 
+            updateChart()
+        });
+
+        function shuffle(array) {
+        let currentIndex = array.length,  randomIndex;
+        while (currentIndex > 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+        }
+
+        //Insertion Sort
+
+        document.getElementById('insertion').addEventListener('click', function() {
+            insertionSort(yValues); 
+            updateChart()
+        });
+
+        function insertionSort(array) {
+        for (let i = 1; i < array.length; i++) {
+            let currentElement = array[i];
+            let j = i - 1;
+            while (j >= 0 && currentElement < array[j]) {
+            array[j + 1] = array[j];
+            j--;
+            }
+            array[j + 1] = currentElement;
+        }
+        }
+
+        //Selection Sort
+
+        document.getElementById('selection').addEventListener('click', function() {
+            selectionSort(yValues); 
+            updateChart()
+        });
+
+        function selectionSort(array) {
+        const n = array.length;
+        for (let i = 0; i < n - 1; i++) {
+            let minIndex = i;
+            for (let j = i + 1; j < n; j++) {
+            if (array[j] < array[minIndex]) {
+                minIndex = j;
+            }
+            }
+            if (minIndex !== i) {
+            [array[i], array[minIndex]] = [array[minIndex], array[i]];
+            }
+        }
+        }
+
+        //Bubble Sort
+
+        document.getElementById('bubble').addEventListener('click', function() {
+            bubbleSort(yValues); 
+            updateChart()
+        });
+
+        function bubbleSort(array) {
+        const n = array.length;
+        let swapped;
+        do {
+            swapped = false;
+            for (let i = 0; i < n - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                [array[i], array[i + 1]] = [array[i + 1], array[i]];
+                swapped = true;
+            }
+            }
+        } while (swapped);
+        }
+
+        //Quick Sort
+
+        document.getElementById('quick').addEventListener('click', function() {
+            yValues=quickSort(yValues);
+            updateChart()
+        });
+
+        function quickSort(array) {
+        if (array.length <= 1) {
+            return array;
+        }
+        const pivot = array[array.length - 1];
+        const left = [];
+        const right = [];
+        for (let i = 0; i < array.length - 1; i++) {
+            if (array[i] < pivot) {
+            left.push(array[i]);
+            } else {
+            right.push(array[i]);
+            }
+        }
+        return [...quickSort(left), pivot, ...quickSort(right)];
+        }
+
+        //Merge Sort
+
+        document.getElementById('merge').addEventListener('click', function() {
+            yValues=mergeSort(yValues); 
+            updateChart()
+        });
+
+        function mergeSort(array) {
+        if (array.length <= 1) {
+            return array;
+        }
+        const middle = Math.floor(array.length / 2);
+        const left = array.slice(0, middle);
+        const right = array.slice(middle);
+        return merge(mergeSort(left), mergeSort(right));
+        }
+
+        function merge(left, right) {
+        let result = [];
+        let leftIndex = 0;
+        let rightIndex = 0;
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] < right[rightIndex]) {
+            result.push(left[leftIndex]);
+            leftIndex++;
+            } else {
+            result.push(right[rightIndex]);
+            rightIndex++;
+            }
+        }
+        return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
+        }
+
+        //Shell Sort
+
+        document.getElementById('shell').addEventListener('click', function() {
+            shellSort(yValues);
+            updateChart()
+        });
+
+        function shellSort(array) {
+        const n = array.length;
+        let gap = Math.floor(n / 2);
+        while (gap > 0) {
+            for (let i = gap; i < n; i++) {
+            let temp = array[i];
+            let j = i;
+            while (j >= gap && array[j - gap] > temp) {
+                array[j] = array[j - gap];
+                j -= gap;
+            }
+            array[j] = temp;
+            }
+            gap = Math.floor(gap / 2);
+        }
+        }
+
+        //Change Size
+
+        document.getElementById('size').addEventListener('click', function() {
+            shrinkBars(yValues);
+            updateChart()
+        });
+
+        function shrinkBars(yValues) {
+        for (let i = 0; i < yValues.length; i++) {
+            yValues[i] /= 2; 
+        }
+        }
+
+        //Update Chart
+
+        function updateChart() {
+        const chart = document.getElementById('barChart').getContext('2d');
+        chart.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
+
+        new Chart("barChart", {
+        type: "bar",
+        data: {
+            labels: yValues,
+            datasets: [{
+            backgroundColor: "lightblue",
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+        }
+        });
+        }
+    </script>
+</body>
+</html>
